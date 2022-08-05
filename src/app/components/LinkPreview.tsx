@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Grid, TextField } from "@mui/material";
 import LinkPreviewCard from "./LinkPreviewCard";
@@ -10,7 +10,6 @@ const LinkPreview: React.FunctionComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<LinkPreviewResponse | null>(null);
   const [error, setError] = useState<string>("");
-  const [noResponse, setNoResponse] = useState<boolean>(false);
 
   // useEffect(() => {
   //   const resp = {
@@ -56,29 +55,33 @@ const LinkPreview: React.FunctionComponent = () => {
     setLoading(true);
 
     // fetch(
-    //   `https://v1.nocodeapi.com/20010349/link_preview/nOzEqSGBFDMzjcgS?url=${url}`
+    //   `https://v1.nocodeapi.com/20010349/link_preview/SBpgGHsbTkmhONvx?url=${url}`
     // )
-    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     return response.json();
+    //   })
     //   .then((resp: LinkPreviewResponse) => setResponse(resp))
+    //   .then(() => setUrl(""))
+    //   .then(() => setLoading(false))
     //   .catch((error) => {
     //     console.log("error", error);
+    //     setUrl("");
     //     setLoading(false);
     //   });
 
     // Assuming that the response will always have a title.
-    if (response?.title == null) {
-      fetch(
-        `https://api.linkpreview.net/?key=dccaabef21ee961d768caa75f273f85a&q=${url}`
-      )
-        .then((response) => response.json())
-        .then((resp: LinkPreviewResponse) => setResponse(resp))
-        .then(() => setLoading(false))
-        .catch((error) => {
-          console.log("error", error);
-          setLoading(false);
-          setNoResponse(true);
-        });
-    }
+    fetch(
+      `https://api.linkpreview.net/?key=a0048732a8701a66fecbddf3f5ba40e0&q=${url}`
+    )
+      .then((response) => response.json())
+      .then((resp: LinkPreviewResponse) => setResponse(resp))
+      .then(() => setUrl(""))
+      .then(() => setLoading(false))
+      .catch((error) => {
+        console.log("error", error);
+        setUrl("");
+        setLoading(false);
+      });
   };
 
   return (
@@ -115,10 +118,8 @@ const LinkPreview: React.FunctionComponent = () => {
       </form>
       {loading ? (
         <LinkPreviewSkeleton />
-      ) : response ? (
-        <LinkPreviewCard response={response} />
       ) : (
-        noResponse && <h2>No Response Available</h2>
+        response && <LinkPreviewCard response={response} />
       )}
     </div>
   );

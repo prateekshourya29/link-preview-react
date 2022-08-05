@@ -68,7 +68,7 @@ const LinkPreviewCard: React.FunctionComponent<Props> = (props: Props) => (
               ":hover": {
                 textDecoration: "underline",
               },
-              textTransform: "capitalize",
+              textTransform: "lowercase",
             }}
           >
             {props.response.publisher || props.response.url}
