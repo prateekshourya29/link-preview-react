@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
+
+:root {
+  --dodgerBlue: #1B98F5;
+}
+
+body {
+  background-color: #eeffff;
+}
+
+.App {
+  font-family: 'Noto Sans', sans-serif;
+  text-align: center;
+}
+
+.title {
+  color: var(--dodgerBlue);
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.subtitle {
+  margin-top: 10px;
+}
+
+.link-preview {
+  margin: 40px;
+  min-height: calc(100vh - 190px);
+}
+
+a,
+a:active {
+  text-decoration: none;
+  color: black;
+}
+
+a {
+  text-decoration: underline;
+  color: var(--dodgerBlue) !important;
+}
