@@ -84,6 +84,12 @@ const LinkPreview: React.FunctionComponent = () => {
       });
   };
 
+  const clear = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setResponse(null);
+    setUrl("");
+  };
+
   return (
     <div className="link-preview">
       <form onSubmit={handleSubmit}>
@@ -105,14 +111,25 @@ const LinkPreview: React.FunctionComponent = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <LoadingButton
-              type="submit"
-              variant="contained"
-              size="large"
-              loading={loading}
-            >
-              Get Link Preview
-            </LoadingButton>
+            {response ? (
+              <LoadingButton
+                variant="contained"
+                color="error"
+                size="large"
+                onClick={clear}
+              >
+                Clear
+              </LoadingButton>
+            ) : (
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                size="large"
+                loading={loading}
+              >
+                Get Link Preview
+              </LoadingButton>
+            )}
           </Grid>
         </Grid>
       </form>
