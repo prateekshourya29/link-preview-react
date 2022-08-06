@@ -12,7 +12,7 @@ const LinkPreviewSkeleton: React.FunctionComponent = () => (
     sx={{
       width: 250,
       height: 420,
-      padding: "2%",
+      padding: "25px",
       margin: "auto",
       marginTop: "20px",
       ":hover": {

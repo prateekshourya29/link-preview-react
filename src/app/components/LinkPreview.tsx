@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { LoadingButton } from "@mui/lab";
-import { Grid, TextField } from "@mui/material";
+import { Grid, SelectChangeEvent, TextField } from "@mui/material";
 import LinkPreviewCard from "./LinkPreviewCard";
-import { urlPattern } from "../helper";
+import { CardType, LinkPreviewResponse, urlPattern } from "../helper";
 import LinkPreviewSkeleton from "./LinkPreviewSkeleton";
+import LinkPreviewTwitterCard from "./LinkPreviewTwitterCard";
+import Customizations from "./Customizations";
 
 const LinkPreview: React.FunctionComponent = () => {
   const [url, setUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<LinkPreviewResponse | null>(null);
   const [error, setError] = useState<string>("");
+  const [showCustomizations, setShowCustomizations] = useState<boolean>(false);
+  const [cardType, setCardType] = useState<CardType>("Type 1");
+  const [borderRadius, setBorderRadius] = useState<number>(15);
+  const [imageBorderRadius, setImageBorderRadius] = useState<number>(7);
 
   // useEffect(() => {
   //   const resp = {
@@ -26,11 +32,26 @@ const LinkPreview: React.FunctionComponent = () => {
   //   setResponse(resp);
   // }, []);
 
-  const onUrlChange = (
+  const handleUrlChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     if (error !== "") setError("");
     setUrl(e.target.value);
+  };
+
+  const handleCardTypeChange = (e: SelectChangeEvent) => {
+    setCardType(e.target.value as CardType);
+  };
+
+  const handleBorderRadiusChange = (e: Event, value: number | number[]) => {
+    setBorderRadius(value as number);
+  };
+
+  const handleImageBorderRadiusChange = (
+    e: Event,
+    value: number | number[]
+  ) => {
+    setImageBorderRadius(value as number);
   };
 
   const checkError = () => {
@@ -106,12 +127,12 @@ const LinkPreview: React.FunctionComponent = () => {
               label="Enter an URL for preview"
               helperText={error}
               value={url}
-              onChange={onUrlChange}
+              onChange={handleUrlChange}
               fullWidth
             />
           </Grid>
           <Grid item xs={12}>
-            {response ? (
+            {response && !url ? (
               <LoadingButton
                 variant="contained"
                 color="error"
@@ -136,21 +157,46 @@ const LinkPreview: React.FunctionComponent = () => {
       {loading ? (
         <LinkPreviewSkeleton />
       ) : (
-        response && <LinkPreviewCard response={response} />
+        response && (
+          <Fragment>
+            {cardType === "Type 1" ? (
+              <LinkPreviewCard
+                response={response}
+                borderRadius={borderRadius}
+                imageBorderRadius={imageBorderRadius}
+              />
+            ) : (
+              <LinkPreviewTwitterCard
+                response={response}
+                borderRadius={borderRadius}
+                imageBorderRadius={imageBorderRadius}
+              />
+            )}
+            <LoadingButton
+              variant="contained"
+              color={!showCustomizations ? "primary" : "secondary"}
+              onClick={() => setShowCustomizations(!showCustomizations)}
+              sx={{ marginTop: "20px" }}
+            >
+              {!showCustomizations
+                ? "Customize"
+                : "Hide Customization Settings"}
+            </LoadingButton>
+            {showCustomizations && (
+              <Customizations
+                cardType={cardType}
+                handleCardTypeChange={handleCardTypeChange}
+                borderRadius={borderRadius}
+                handleBorderRadiusChange={handleBorderRadiusChange}
+                imageBorderRadius={imageBorderRadius}
+                handleImageBorderRadiusChange={handleImageBorderRadiusChange}
+              />
+            )}
+          </Fragment>
+        )
       )}
     </div>
   );
 };
-
-export interface LinkPreviewResponse {
-  author: string | null;
-  date: string | null;
-  title: string | null;
-  description: string | null;
-  image: string | null;
-  logo: string | null;
-  publisher: string | null;
-  url: string | null;
-}
 
 export default LinkPreview;

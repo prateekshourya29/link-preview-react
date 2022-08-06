@@ -4,3 +4,16 @@ export const urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
 	'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // validate port and path
 	'(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
 	'(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
+
+export interface LinkPreviewResponse {
+	author: string | null;
+	date: string | null;
+	title: string | null;
+	description: string | null;
+	image: string | null;
+	logo: string | null;
+	publisher: string | null;
+	url: string | null;
+}
+
+export type CardType = "Type 1" | "Type 2";

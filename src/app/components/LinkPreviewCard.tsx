@@ -7,9 +7,10 @@ import {
   CardContent,
   CardActions,
   Button,
+  CardActionArea,
 } from "@mui/material";
 import { FiExternalLink } from "react-icons/fi";
-import { LinkPreviewResponse } from "./LinkPreview";
+import { LinkPreviewResponse } from "../helper";
 
 const LinkPreviewCard: React.FunctionComponent<Props> = (props: Props) => (
   <Grid
@@ -22,66 +23,78 @@ const LinkPreviewCard: React.FunctionComponent<Props> = (props: Props) => (
     }}
   >
     <Grid item>
-      <Card
+      <CardActionArea
+        href={props.response.url || "#"}
+        target="_blank"
         sx={{
-          maxWidth: 320,
-          minHeight: 400,
-          padding: "5%",
-          ":hover": {
-            boxShadow: `
-              0 1px 2px rgba(0,0,0,0.07),
-              0 2px 4px rgba(0,0,0,0.07), 
-              0 4px 8px rgba(0,0,0,0.07), 
-              0 8px 16px rgba(0,0,0,0.07),
-              0 16px 32px rgba(0,0,0,0.07), 
-              0 32px 64px rgba(0,0,0,0.07);
-            `,
-          },
+          borderRadius: props.borderRadius + "px",
         }}
       >
-        <CardMedia
-          component="img"
-          height="250px"
-          image={props.response.image || ""}
-          alt="no image found"
+        <Card
           sx={{
-            objectFit: "scale-down",
+            maxWidth: 320,
+            minHeight: 400,
+            padding: "5%",
+            borderRadius: props.borderRadius + "px",
+            ":hover": {
+              boxShadow: `
+                0 1px 2px rgba(0,0,0,0.07),
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
+              `,
+            },
           }}
-        />
-        <CardContent sx={{ margin: 0 }}>
-          <Typography gutterBottom variant="h5" component="div">
-            {props.response.title}
-          </Typography>
-          <Typography variant="body1" color="text.primary">
-            {props.response.description}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          {props.response.logo && (
-            <img src={props.response.logo} width="40px" alt="no logo" />
-          )}
-          <Button
-            variant="text"
-            href={props.response.url || "#"}
-            target="_blank"
+        >
+          <CardMedia
+            component="img"
+            image={props.response.image || ""}
+            alt="No Image Found"
             sx={{
-              ":hover": {
-                textDecoration: "underline",
-              },
-              textTransform: "lowercase",
+              objectFit: "contain",
+              borderRadius: props.imageBorderRadius + "px",
             }}
-          >
-            {props.response.publisher || props.response.url}
-            <FiExternalLink style={{ marginLeft: "2px" }} />
-          </Button>
-        </CardActions>
-      </Card>
+          />
+          <CardContent sx={{ margin: 0 }}>
+            <Typography gutterBottom variant="h5" component="div">
+              {props.response.title}
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              {props.response.description}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            {props.response.logo && (
+              <img src={props.response.logo} width="40px" alt="no logo" />
+            )}
+            {/* No need to add href here it will bubble up to the CardActionArea Component */}
+            <Button
+              variant="text"
+              sx={{
+                ":hover": {
+                  textDecoration: "underline",
+                },
+                textTransform: props.response.publisher
+                  ? "Capitalize"
+                  : "lowercase",
+              }}
+            >
+              {props.response.publisher || props.response.url}
+              <FiExternalLink style={{ marginLeft: "2px" }} />
+            </Button>
+          </CardActions>
+        </Card>
+      </CardActionArea>
     </Grid>
   </Grid>
 );
 
 interface Props {
   response: LinkPreviewResponse;
+  borderRadius: number;
+  imageBorderRadius: number;
 }
 
 export default LinkPreviewCard;

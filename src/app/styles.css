@@ -38,3 +38,7 @@ a {
   text-decoration: underline;
   color: var(--dodgerBlue) !important;
 }
+
+.customizations {
+  margin: 40px;
+}
