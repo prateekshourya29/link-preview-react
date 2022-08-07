@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useRef } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Grid, SelectChangeEvent, TextField } from "@mui/material";
 import LinkPreviewCard from "./LinkPreviewCard";
@@ -13,6 +13,9 @@ import LinkPreviewSkeleton from "./LinkPreviewSkeleton";
 import LinkPreviewTwitterCard from "./LinkPreviewTwitterCard";
 import Customizations from "./Customizations";
 
+// Need to use require becuase typescript is not supported by this library.
+const domtoimage = require("dom-to-image");
+
 const LinkPreview: React.FunctionComponent = () => {
   const [url, setUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,6 +26,16 @@ const LinkPreview: React.FunctionComponent = () => {
   const [customization, setCustomization] =
     useState<Customization>(customizationObj);
 
+  const linkPreviewRef = useRef(null);
+
+  const handleLinkPreviewDownload = async () => {
+    const dataUrl = await domtoimage.toPng(linkPreviewRef.current);
+    const link = document.createElement("a");
+    link.download = "link-preview-react.png";
+    link.href = dataUrl;
+    link.click();
+  };
+
   // useEffect(() => {
   //   const resp = {
   //     author: null,
@@ -31,6 +44,7 @@ const LinkPreview: React.FunctionComponent = () => {
   //       "Full-Stack Developer. prateekshourya29 has 8 repositories available. Follow their code on GitHub.",
   //     image:
   //       "https://abs.twimg.com/responsive-web/client-web/icon-ios.8ea219d5.png",
+  //     // image: "https://media.giphy.com/media/3zhxq2ttgN6rEw8SDx/giphy.gif",
   //     logo: "https://logo.clearbit.com/github.com",
   //     publisher: "GitHub",
   //     title: "prateekshourya29 - Overview",
@@ -187,26 +201,36 @@ const LinkPreview: React.FunctionComponent = () => {
       ) : (
         response && (
           <Fragment>
-            {cardType === "Type 1" ? (
-              <LinkPreviewCard
-                response={response}
-                customization={customization}
-              />
-            ) : (
-              <LinkPreviewTwitterCard
-                response={response}
-                customization={customization}
-              />
-            )}
+            <div style={{ padding: "10px" }} ref={linkPreviewRef}>
+              {cardType === "Type 1" ? (
+                <LinkPreviewCard
+                  response={response}
+                  customization={customization}
+                />
+              ) : (
+                <LinkPreviewTwitterCard
+                  response={response}
+                  customization={customization}
+                />
+              )}
+            </div>
             <LoadingButton
               variant="contained"
               color="secondary"
               onClick={() => setShowCustomizations(!showCustomizations)}
-              sx={{ marginTop: "20px" }}
+              sx={{ margin: "20px" }}
             >
               {!showCustomizations
                 ? "Customize"
                 : "Hide Customization Settings"}
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              color="secondary"
+              onClick={() => handleLinkPreviewDownload()}
+              sx={{ margin: "20px" }}
+            >
+              Download Preview
             </LoadingButton>
             {showCustomizations && (
               <Customizations
