@@ -134,6 +134,8 @@ const LinkPreview: React.FunctionComponent = () => {
     e.preventDefault();
     setResponse(null);
     setUrl("");
+    setCardType("Type 1");
+    setCustomization(customizationObj);
   };
 
   return (
