@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer: React.FunctionComponent = () => (
   <div className="footer">
-    <h4>
+    <div>
       Made by{" "}
       <a
         href="https://github.com/prateekshourya29"
@@ -12,7 +12,7 @@ const Footer: React.FunctionComponent = () => (
         Prateek
       </a>{" "}
       in 🇮🇳
-    </h4>
+    </div>
   </div>
 );
 

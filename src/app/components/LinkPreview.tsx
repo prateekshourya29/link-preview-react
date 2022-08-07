@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Grid, SelectChangeEvent, TextField } from "@mui/material";
 import LinkPreviewCard from "./LinkPreviewCard";
@@ -23,20 +23,21 @@ const LinkPreview: React.FunctionComponent = () => {
   const [customization, setCustomization] =
     useState<Customization>(customizationObj);
 
-  useEffect(() => {
-    const resp = {
-      author: null,
-      date: null,
-      description:
-        "Full-Stack Developer. prateekshourya29 has 8 repositories available. Follow their code on GitHub.",
-      image: "https://avatars.githubusercontent.com/u/33979846?v=4?s=400",
-      logo: "https://logo.clearbit.com/github.com",
-      publisher: "GitHub",
-      title: "prateekshourya29 - Overview",
-      url: "https://github.com/prateekshourya29",
-    };
-    setResponse(resp);
-  }, []);
+  // useEffect(() => {
+  //   const resp = {
+  //     author: null,
+  //     date: null,
+  //     description:
+  //       "Full-Stack Developer. prateekshourya29 has 8 repositories available. Follow their code on GitHub.",
+  //     image:
+  //       "https://abs.twimg.com/responsive-web/client-web/icon-ios.8ea219d5.png",
+  //     logo: "https://logo.clearbit.com/github.com",
+  //     publisher: "GitHub",
+  //     title: "prateekshourya29 - Overview",
+  //     url: "https://github.com/prateekshourya29",
+  //   };
+  //   setResponse(resp);
+  // }, []);
 
   const handleUrlChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -57,6 +58,7 @@ const LinkPreview: React.FunctionComponent = () => {
       newCustomization.cardRadius = 35;
       newCustomization.imageRadius = 0;
     }
+    newCustomization.cardHeight = 0;
 
     setCustomization(newCustomization);
     setCardType(e.target.value as CardType);
@@ -158,7 +160,7 @@ const LinkPreview: React.FunctionComponent = () => {
             {response && !url ? (
               <LoadingButton
                 variant="contained"
-                color="error"
+                color="secondary"
                 size="large"
                 onClick={clear}
               >
@@ -168,6 +170,7 @@ const LinkPreview: React.FunctionComponent = () => {
               <LoadingButton
                 type="submit"
                 variant="contained"
+                color="secondary"
                 size="large"
                 loading={loading}
               >

@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Slider } from "@mui/material";
 
 const CustomSlider = styled(Slider)({
-  color: "#1B98F5",
+  color: "#188a72",
   height: 8,
   "& .MuiSlider-track": {
     border: "none",
@@ -27,7 +27,7 @@ const CustomSlider = styled(Slider)({
     width: 32,
     height: 32,
     borderRadius: "50% 50% 50% 0",
-    backgroundColor: "#1B98F5",
+    backgroundColor: "#188a72",
     transformOrigin: "bottom left",
     transform: "translate(50%, -100%) rotate(-45deg) scale(0)",
     "&:before": { display: "none" },

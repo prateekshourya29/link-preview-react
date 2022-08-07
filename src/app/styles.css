@@ -1,44 +1,64 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
-
-:root {
-  --dodgerBlue: #1B98F5;
-}
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@500;700;800&display=swap');
 
 body {
-  background-color: #eeffff;
+  margin: 0;
+  padding: 0;
+}
+
+.header {
+  color: white;
+  background: rgb(24,138,114);
+  background: linear-gradient(90deg, rgba(24,138,114,0.9007935938047094) 15%, rgba(64,43,91,0.8979924733565301) 65%); 
+  text-transform: capitalize;
+  letter-spacing: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .App {
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Exo 2', sans-serif;
   text-align: center;
 }
 
 .title {
-  color: var(--dodgerBlue);
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 40px;
   margin-bottom: 0;
 }
 
 .subtitle {
   margin-top: 10px;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 7px;
 }
 
 .link-preview {
-  margin: 40px;
-  min-height: calc(100vh - 190px);
+  background: rgb(24,138,114);
+  background: linear-gradient(150deg, rgba(24,138,114,0.2) 25%, rgba(64,43,91,0.2) 65%); 
+  padding: 40px;
+  min-height: calc(100vh - 250px);
 }
 
 a,
 a:active {
   text-decoration: none;
-  color: black;
+  color: white;
 }
 
 a {
   text-decoration: underline;
-  color: var(--dodgerBlue) !important;
 }
 
 .customizations {
   margin: 40px;
+}
+
+.footer {
+  color: white;
+  background: rgb(24,138,114);
+  background: linear-gradient(90deg, rgba(24,138,114,0.9007935938047094) 15%, rgba(64,43,91,0.8979924733565301) 65%); 
+  font-size: 18px;
+  font-weight: 500;
+  padding: 20px
 }
