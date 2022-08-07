@@ -17,3 +17,17 @@ export interface LinkPreviewResponse {
 }
 
 export type CardType = "Type 1" | "Type 2";
+
+export interface Customization {
+	cardRadius: number;
+	cardWidth: number;
+	cardHeight: number;
+	imageRadius: number;
+}
+
+export const customizationObj: Customization = {
+	cardRadius: 15,
+	imageRadius: 7,
+	cardWidth: 300,
+	cardHeight: 0,
+};

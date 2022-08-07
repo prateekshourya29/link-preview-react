@@ -1,8 +1,14 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { Grid, SelectChangeEvent, TextField } from "@mui/material";
 import LinkPreviewCard from "./LinkPreviewCard";
-import { CardType, LinkPreviewResponse, urlPattern } from "../helper";
+import {
+  CardType,
+  Customization,
+  customizationObj,
+  LinkPreviewResponse,
+  urlPattern,
+} from "../helper";
 import LinkPreviewSkeleton from "./LinkPreviewSkeleton";
 import LinkPreviewTwitterCard from "./LinkPreviewTwitterCard";
 import Customizations from "./Customizations";
@@ -14,23 +20,23 @@ const LinkPreview: React.FunctionComponent = () => {
   const [error, setError] = useState<string>("");
   const [showCustomizations, setShowCustomizations] = useState<boolean>(false);
   const [cardType, setCardType] = useState<CardType>("Type 1");
-  const [borderRadius, setBorderRadius] = useState<number>(15);
-  const [imageBorderRadius, setImageBorderRadius] = useState<number>(7);
+  const [customization, setCustomization] =
+    useState<Customization>(customizationObj);
 
-  // useEffect(() => {
-  //   const resp = {
-  //     author: null,
-  //     date: null,
-  //     description:
-  //       "Full-Stack Developer. prateekshourya29 has 8 repositories available. Follow their code on GitHub.",
-  //     image: "https://avatars.githubusercontent.com/u/33979846?v=4?s=400",
-  //     logo: "https://logo.clearbit.com/github.com",
-  //     publisher: "GitHub",
-  //     title: "prateekshourya29 - Overview",
-  //     url: "https://github.com/prateekshourya29",
-  //   };
-  //   setResponse(resp);
-  // }, []);
+  useEffect(() => {
+    const resp = {
+      author: null,
+      date: null,
+      description:
+        "Full-Stack Developer. prateekshourya29 has 8 repositories available. Follow their code on GitHub.",
+      image: "https://avatars.githubusercontent.com/u/33979846?v=4?s=400",
+      logo: "https://logo.clearbit.com/github.com",
+      publisher: "GitHub",
+      title: "prateekshourya29 - Overview",
+      url: "https://github.com/prateekshourya29",
+    };
+    setResponse(resp);
+  }, []);
 
   const handleUrlChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -40,18 +46,35 @@ const LinkPreview: React.FunctionComponent = () => {
   };
 
   const handleCardTypeChange = (e: SelectChangeEvent) => {
+    const newCustomization = { ...customization };
+
+    if (e.target.value === "Type 1") {
+      newCustomization.cardWidth = 300;
+      newCustomization.cardRadius = 15;
+      newCustomization.imageRadius = 7;
+    } else {
+      newCustomization.cardWidth = 600;
+      newCustomization.cardRadius = 35;
+      newCustomization.imageRadius = 0;
+    }
+
+    setCustomization(newCustomization);
     setCardType(e.target.value as CardType);
   };
 
-  const handleBorderRadiusChange = (e: Event, value: number | number[]) => {
-    setBorderRadius(value as number);
-  };
+  const handleCustomizationChange = (key: string, value: number) => {
+    const newCustomization: Customization = { ...customization };
 
-  const handleImageBorderRadiusChange = (
-    e: Event,
-    value: number | number[]
-  ) => {
-    setImageBorderRadius(value as number);
+    if (
+      key === "cardRadius" ||
+      key === "cardWidth" ||
+      key === "cardHeight" ||
+      key === "imageRadius"
+    ) {
+      newCustomization[key] = value;
+    }
+
+    setCustomization(newCustomization);
   };
 
   const checkError = () => {
@@ -162,19 +185,17 @@ const LinkPreview: React.FunctionComponent = () => {
             {cardType === "Type 1" ? (
               <LinkPreviewCard
                 response={response}
-                borderRadius={borderRadius}
-                imageBorderRadius={imageBorderRadius}
+                customization={customization}
               />
             ) : (
               <LinkPreviewTwitterCard
                 response={response}
-                borderRadius={borderRadius}
-                imageBorderRadius={imageBorderRadius}
+                customization={customization}
               />
             )}
             <LoadingButton
               variant="contained"
-              color={!showCustomizations ? "primary" : "secondary"}
+              color="secondary"
               onClick={() => setShowCustomizations(!showCustomizations)}
               sx={{ marginTop: "20px" }}
             >
@@ -186,10 +207,8 @@ const LinkPreview: React.FunctionComponent = () => {
               <Customizations
                 cardType={cardType}
                 handleCardTypeChange={handleCardTypeChange}
-                borderRadius={borderRadius}
-                handleBorderRadiusChange={handleBorderRadiusChange}
-                imageBorderRadius={imageBorderRadius}
-                handleImageBorderRadiusChange={handleImageBorderRadiusChange}
+                customization={customization}
+                handleCustomizationChange={handleCustomizationChange}
               />
             )}
           </Fragment>

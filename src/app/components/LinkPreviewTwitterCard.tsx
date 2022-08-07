@@ -11,7 +11,7 @@ import {
   CardActionArea,
 } from "@mui/material";
 import { FiExternalLink } from "react-icons/fi";
-import { LinkPreviewResponse } from "../helper";
+import { Customization, LinkPreviewResponse } from "../helper";
 
 const LinkPreviewTwitterCard: React.FunctionComponent<Props> = (
   props: Props
@@ -25,14 +25,14 @@ const LinkPreviewTwitterCard: React.FunctionComponent<Props> = (
       marginTop: "20px",
     }}
   >
-    <Grid item>
-      <Card
-        sx={{
-          display: "flex",
-          maxWidth: 600,
-          borderRadius: props.borderRadius + "px",
-          ":hover": {
-            boxShadow: `
+    <Card
+      sx={{
+        display: "flex",
+        width: props.customization.cardWidth,
+        height: props.customization.cardHeight || "auto",
+        borderRadius: props.customization.cardRadius + "px",
+        ":hover": {
+          boxShadow: `
               0 1px 2px rgba(0,0,0,0.07),
               0 2px 4px rgba(0,0,0,0.07), 
               0 4px 8px rgba(0,0,0,0.07), 
@@ -40,72 +40,71 @@ const LinkPreviewTwitterCard: React.FunctionComponent<Props> = (
               0 16px 32px rgba(0,0,0,0.07), 
               0 32px 64px rgba(0,0,0,0.07);
             `,
-          },
+        },
+      }}
+    >
+      <CardMedia
+        component="img"
+        sx={{
+          width: props.customization.cardWidth - 430,
+          height: props.customization.cardHeight || "auto",
+          objectFit: "contain",
+          borderRadius: props.customization.imageRadius + "px",
         }}
-      >
-        <CardMedia
-          component="img"
-          sx={{
-            width: 170,
-            objectFit: "contain",
-            borderRadius: props.imageBorderRadius + "px",
-          }}
-          image={props.response.image || ""}
-          alt="No Image Found"
-        />
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <CardActionArea
-            href={props.response.url || "#"}
-            target="_blank"
-            sx={{ borderRadius: props.borderRadius + "px" }}
+        image={props.response.image || ""}
+        alt="No Image Found"
+      />
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <CardActionArea
+          href={props.response.url || "#"}
+          target="_blank"
+          sx={{ borderRadius: props.customization.cardRadius + "px" }}
+        >
+          <CardContent sx={{ flex: "1 0 auto" }}>
+            <Typography gutterBottom variant="h5" component="div">
+              {props.response.title}
+            </Typography>
+            <Typography variant="body1" color="text.primary">
+              {props.response.description}
+            </Typography>
+          </CardContent>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              pl: 1,
+              pb: 1,
+            }}
           >
-            <CardContent sx={{ flex: "1 0 auto" }}>
-              <Typography gutterBottom variant="h5" component="div">
-                {props.response.title}
-              </Typography>
-              <Typography variant="body1" color="text.primary">
-                {props.response.description}
-              </Typography>
-            </CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                pl: 1,
-                pb: 1,
-              }}
-            >
-              <CardActions>
-                {props.response.logo && (
-                  <img src={props.response.logo} width="40px" alt="no logo" />
-                )}
-                <Button
-                  variant="text"
-                  sx={{
-                    ":hover": {
-                      textDecoration: "underline",
-                    },
-                    textTransform: props.response.publisher
-                      ? "Capitalize"
-                      : "lowercase",
-                  }}
-                >
-                  {props.response.publisher || props.response.url}
-                  <FiExternalLink style={{ marginLeft: "2px" }} />
-                </Button>
-              </CardActions>
-            </Box>
-          </CardActionArea>
-        </Box>
-      </Card>
-    </Grid>
+            <CardActions>
+              {props.response.logo && (
+                <img src={props.response.logo} width="40px" alt="no logo" />
+              )}
+              <Button
+                variant="text"
+                sx={{
+                  ":hover": {
+                    textDecoration: "underline",
+                  },
+                  textTransform: props.response.publisher
+                    ? "Capitalize"
+                    : "lowercase",
+                }}
+              >
+                {props.response.publisher || props.response.url}
+                <FiExternalLink style={{ marginLeft: "2px" }} />
+              </Button>
+            </CardActions>
+          </Box>
+        </CardActionArea>
+      </Box>
+    </Card>
   </Grid>
 );
 
 interface Props {
   response: LinkPreviewResponse;
-  borderRadius: number;
-  imageBorderRadius: number;
+  customization: Customization;
 }
 
 export default LinkPreviewTwitterCard;
