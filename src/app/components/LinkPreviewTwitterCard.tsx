@@ -86,12 +86,10 @@ const LinkPreviewTwitterCard: React.FunctionComponent<Props> = (
                   ":hover": {
                     textDecoration: "underline",
                   },
-                  textTransform: props.response.publisher
-                    ? "Capitalize"
-                    : "lowercase",
+                  textTransform: "Capitalize",
                 }}
               >
-                {props.response.publisher || props.response.url}
+                {props.response.publisher}
                 <FiExternalLink style={{ marginLeft: "2px" }} />
               </Button>
             </CardActions>

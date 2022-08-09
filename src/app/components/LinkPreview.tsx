@@ -7,6 +7,7 @@ import {
   Customization,
   customizationObj,
   LinkPreviewResponse,
+  noResponseObj,
   urlPattern,
 } from "../helper";
 import LinkPreviewSkeleton from "./LinkPreviewSkeleton";
@@ -94,6 +95,10 @@ const LinkPreview: React.FunctionComponent = () => {
   };
 
   const checkError = () => {
+    if (response) {
+      setResponse(null);
+    }
+
     if (url === "") {
       setError("Please enter an url to continue");
       return true;
@@ -107,6 +112,34 @@ const LinkPreview: React.FunctionComponent = () => {
     return false;
   };
 
+  const handleResponseRejection = () => {
+    if (response == null) {
+      fetch(
+        `https://api.linkpreview.net/?key=a0048732a8701a66fecbddf3f5ba40e0&q=${url}`
+      )
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return Promise.reject(response.status);
+        })
+        .then((resp: LinkPreviewResponse) => {
+          if (resp.publisher == null) {
+            resp.publisher = noResponseObj.publisher;
+          }
+          setResponse(resp);
+        })
+        .then(() => setUrl(""))
+        .then(() => setLoading(false))
+        .catch((error) => {
+          console.log("error", error);
+          setResponse(noResponseObj);
+          setUrl("");
+          setLoading(false);
+        });
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -114,33 +147,21 @@ const LinkPreview: React.FunctionComponent = () => {
 
     setLoading(true);
 
-    // fetch(
-    //   `https://v1.nocodeapi.com/20010349/link_preview/SBpgGHsbTkmhONvx?url=${url}`
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((resp: LinkPreviewResponse) => setResponse(resp))
-    //   .then(() => setUrl(""))
-    //   .then(() => setLoading(false))
-    //   .catch((error) => {
-    //     console.log("error", error);
-    //     setUrl("");
-    //     setLoading(false);
-    //   });
-
-    // Assuming that the response will always have a title.
     fetch(
-      `https://api.linkpreview.net/?key=a0048732a8701a66fecbddf3f5ba40e0&q=${url}`
+      `https://v1.nocodeapi.com/20010349/link_preview/SBpgGHsbTkmhONvx?url=${url}`
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return Promise.reject(response.status);
+      })
       .then((resp: LinkPreviewResponse) => setResponse(resp))
       .then(() => setUrl(""))
       .then(() => setLoading(false))
       .catch((error) => {
         console.log("error", error);
-        setUrl("");
-        setLoading(false);
+        handleResponseRejection();
       });
   };
 
@@ -150,6 +171,7 @@ const LinkPreview: React.FunctionComponent = () => {
     setUrl("");
     setCardType("Type 1");
     setCustomization(customizationObj);
+    setShowCustomizations(false);
   };
 
   return (

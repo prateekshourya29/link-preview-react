@@ -31,3 +31,15 @@ export const customizationObj: Customization = {
 	cardWidth: 300,
 	cardHeight: 0,
 };
+
+export const noResponseObj: LinkPreviewResponse = {
+	author: null,
+	date: null,
+	description:
+		"No Description Found.",
+	image: "https://media.giphy.com/media/3zhxq2ttgN6rEw8SDx/giphy.gif",
+	logo: null,
+	publisher: "Click Here to know more",
+	title: "No Title Found",
+	url: "#",
+};
